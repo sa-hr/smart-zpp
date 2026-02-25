@@ -108,13 +108,13 @@ describe("solve()", () => {
   it("symmetric incomes → equal tax at both extremes", () => {
     const r = solve({
       parentA: {
-        grossAnnual: 25000,
+        incomeAnnual: 20000,
         taxPaid: 0,
         birthYear: 1990,
         disability: null,
       },
       parentB: {
-        grossAnnual: 25000,
+        incomeAnnual: 20000,
         taxPaid: 0,
         birthYear: 1990,
         disability: null,
@@ -131,13 +131,13 @@ describe("solve()", () => {
   it("young parent B (≤25): all deduction goes to A", () => {
     const r = solve({
       parentA: {
-        grossAnnual: 30000,
+        incomeAnnual: 24000,
         taxPaid: 0,
         birthYear: 1988,
         disability: null,
       },
       parentB: {
-        grossAnnual: 20000,
+        incomeAnnual: 16000,
         taxPaid: 0,
         birthYear: 2002,
         disability: null,
@@ -152,13 +152,13 @@ describe("solve()", () => {
   it("low incomes, both drop to zero → H = 0", () => {
     const r = solve({
       parentA: {
-        grossAnnual: 10000,
+        incomeAnnual: 8000,
         taxPaid: 50,
         birthYear: 1990,
         disability: null,
       },
       parentB: {
-        grossAnnual: 11000,
+        incomeAnnual: 8800,
         taxPaid: 80,
         birthYear: 1991,
         disability: null,
@@ -168,18 +168,42 @@ describe("solve()", () => {
       depCount: 0,
     });
     expect(r.H_min).toBeCloseTo(0);
+    expect(r.Δ_A).toBeCloseTo(50);
+    expect(r.Δ_B).toBeCloseTo(80);
+  });
+
+  it("Δ = taxPaid - τ for each parent", () => {
+    const r = solve({
+      parentA: {
+        incomeAnnual: 100000,
+        taxPaid: 20000,
+        birthYear: 1990,
+        disability: null,
+      },
+      parentB: {
+        incomeAnnual: 100000,
+        taxPaid: 20000,
+        birthYear: 1990,
+        disability: null,
+      },
+      rates: { lower: 0.2, higher: 0.3 },
+      childCount: 3,
+      depCount: 0,
+    });
+    expect(r.Δ_A).toBeCloseTo(20000 - r.τ_A);
+    expect(r.Δ_B).toBeCloseTo(20000 - r.τ_B);
   });
 
   it("large income difference → all deduction to higher earner", () => {
     const r = solve({
       parentA: {
-        grossAnnual: 80000,
+        incomeAnnual: 64000,
         taxPaid: 12000,
         birthYear: 1985,
         disability: null,
       },
       parentB: {
-        grossAnnual: 12000,
+        incomeAnnual: 9600,
         taxPaid: 100,
         birthYear: 1988,
         disability: null,
@@ -195,13 +219,13 @@ describe("solve()", () => {
   it("parent A with partial disability", () => {
     const r = solve({
       parentA: {
-        grossAnnual: 20000,
+        incomeAnnual: 16000,
         taxPaid: 600,
         birthYear: 1980,
         disability: "partial",
       },
       parentB: {
-        grossAnnual: 28000,
+        incomeAnnual: 22400,
         taxPaid: 1800,
         birthYear: 1982,
         disability: null,
@@ -217,13 +241,13 @@ describe("solve()", () => {
   it("Zagreb, high incomes, 5 children", () => {
     const r = solve({
       parentA: {
-        grossAnnual: 100000,
+        incomeAnnual: 80000,
         taxPaid: 18000,
         birthYear: 1983,
         disability: null,
       },
       parentB: {
-        grossAnnual: 60000,
+        incomeAnnual: 48000,
         taxPaid: 6000,
         birthYear: 1986,
         disability: null,
@@ -282,13 +306,13 @@ describe("optimality property", () => {
   it("H(x*) ≤ H(x) for 1000 random x ∈ [0, D]", () => {
     const r = solve({
       parentA: {
-        grossAnnual: 45000,
+        incomeAnnual: 36000,
         taxPaid: 3000,
         birthYear: 1987,
         disability: null,
       },
       parentB: {
-        grossAnnual: 22000,
+        incomeAnnual: 17600,
         taxPaid: 800,
         birthYear: 1997,
         disability: null,

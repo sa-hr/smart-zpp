@@ -1,6 +1,6 @@
 {
   "name": "@sa-hr/smart-zpp",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Optimal child tax deduction distribution calculator for Croatian households",
   "type": "module",
   "main": "smartzpp.js",

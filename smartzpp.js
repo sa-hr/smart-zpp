@@ -50,8 +50,8 @@ export function solve({ parentA, parentB, rates, childCount, depCount }) {
 
   const D = coefficients.reduce((s, c) => s + c * B, 0)
 
-  const I_A = parentA.grossAnnual * 0.8
-  const I_B = parentB.grossAnnual * 0.8
+  const I_A = parentA.incomeAnnual
+  const I_B = parentB.incomeAnnual
 
   const d_A = parentA.disability === "full" ? B : parentA.disability === "partial" ? 0.3 * B : 0
   const d_B = parentB.disability === "full" ? B : parentB.disability === "partial" ? 0.3 * B : 0
@@ -92,6 +92,8 @@ export function solve({ parentA, parentB, rates, childCount, depCount }) {
     H_min: τ(T_A, r_LA, r_H) + τ(T_B, r_LB, r_H),
     τ_A: τ(T_A, r_LA, r_H),
     τ_B: τ(T_B, r_LB, r_H),
+    Δ_A: parentA.taxPaid - τ(T_A, r_LA, r_H),
+    Δ_B: parentB.taxPaid - τ(T_B, r_LB, r_H),
     T_A,
     T_B,
     F_A,

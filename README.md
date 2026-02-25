@@ -16,8 +16,8 @@ npm install @sa-hr/smart-zpp --registry=https://npm.pkg.github.com
 import { solve } from "@sa-hr/smart-zpp";
 
 const result = solve({
-  parentA: { grossAnnual: 30000, taxPaid: 2000, birthYear: 1990, disability: null },
-  parentB: { grossAnnual: 18000, taxPaid: 400, birthYear: 1997, disability: null },
+  parentA: { incomeAnnual: 30000, taxPaid: 2000, birthYear: 1990, disability: null },
+  parentB: { incomeAnnual: 18000, taxPaid: 400, birthYear: 1997, disability: null },
   rates: { lower: 0.20, higher: 0.30 },
   childCount: 3,
   depCount: 0,
@@ -28,8 +28,8 @@ const result = solve({
 
 | Parametar | Opis |
 |---|---|
-| `parentA`, `parentB` | `{ grossAnnual, taxPaid, birthYear, disability }` |
-| `grossAnnual` | Bruto godišnji dohodak (€) |
+| `parentA`, `parentB` | `{ incomeAnnual, taxPaid, birthYear, disability }` |
+| `incomeAnnual` | Godišnji dohodak — bruto plaća minus mirovinski doprinosi (€) |
 | `taxPaid` | Uplaćeni porez tijekom godine (€) |
 | `birthYear` | Godina rođenja (za umanjenje mladih) |
 | `disability` | `"full"`, `"partial"` ili `null` |
@@ -46,6 +46,7 @@ const result = solve({
 | `a`, `b` | Početne oporezive osnovice |
 | `H_min` | Minimalni ukupni porez kućanstva (€) |
 | `τ_A`, `τ_B` | Porez po roditelju u optimumu |
+| `Δ_A`, `Δ_B` | Razlika uplaćenog i dugovanog poreza (pozitivno = povrat, negativno = doplata) |
 | `T_A`, `T_B` | Oporezive osnovice u optimumu |
 | `F_A`, `F_B` | Fiksni osobni odbici |
 | `allocation` | `[{ index, coefficient, fractionA }]` — raspodjela po djetetu |
@@ -59,11 +60,7 @@ Svako dijete donosi poreznu olakšicu — neoporezivi dio dohotka. Olakšica se 
 
 ### Porezni model
 
-Dohodak svakog roditelja (bruto minus mirovinski doprinosi):
-
-$$I = 0{,}8 \cdot G$$
-
-Od toga se oduzme osobni odbitak — 7.200€ godišnje plus eventualno invaliditet:
+Dohodak svakog roditelja ($I$ = `incomeAnnual`) je bruto plaća umanjena za mirovinske doprinose. Od toga se oduzme osobni odbitak — 7.200€ godišnje plus eventualno invaliditet:
 
 $$F = 7\,200 + d$$
 
@@ -136,7 +133,6 @@ Crvena krivulja je $H(x)$. Plave točke su prijelomne točke. Zelena točka je m
 |---|---|
 | Osnovni osobni odbitak | 7.200 €/god |
 | Granica višeg razreda | 60.000 €/god |
-| Mirovinski doprinosi | 20% bruto |
 | Prag za uzdržavanog člana | 3.600 €/god |
 | Niža stopa (raspon) | 15–23% |
 | Viša stopa (raspon) | 25–33% |

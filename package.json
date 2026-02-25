@@ -1,0 +1,36 @@
+{
+  "name": "@sa-hr/smart-zpp",
+  "version": "0.1.0",
+  "description": "Optimal child tax deduction distribution calculator for Croatian households",
+  "type": "module",
+  "main": "smartzpp.js",
+  "exports": {
+    ".": "./smartzpp.js"
+  },
+  "files": [
+    "smartzpp.js"
+  ],
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sa-hr/smart-zpp.git"
+  },
+  "license": "LGPL-3.0-or-later",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com",
+    "access": "public"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.0.2",
+    "vitest": "^4.0.18"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}
